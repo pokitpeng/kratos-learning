@@ -1,0 +1,338 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/blog/v1/blog.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/helloworld/{name}": {
+      "get": {
+        "summary": "Sends a greeting",
+        "operationId": "Greeter_SayHello",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1HelloReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Greeter"
+        ]
+      }
+    },
+    "/v1/article": {
+      "get": {
+        "summary": "列举文章.",
+        "operationId": "Blog_ListArticle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListArticleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "Blog"
+        ]
+      },
+      "post": {
+        "summary": "创建文章.",
+        "operationId": "Blog_CreateArticle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateArticleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateArticleRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Blog"
+        ]
+      }
+    },
+    "/v1/article/{id}": {
+      "get": {
+        "summary": "获取文章.",
+        "operationId": "Blog_GetArticle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetArticleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "文章id.",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Blog"
+        ]
+      },
+      "delete": {
+        "summary": "删除文章.",
+        "operationId": "Blog_DeleteArticle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteArticleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "文章id.",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Blog"
+        ]
+      },
+      "put": {
+        "summary": "更新文章.",
+        "operationId": "Blog_UpdateArticle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateArticleReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "文章id.",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateArticleRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Blog"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1Article": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "description": "文章id."
+        },
+        "title": {
+          "type": "string",
+          "description": "文章标题."
+        },
+        "content": {
+          "type": "string",
+          "description": "文章内容."
+        },
+        "like": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1CreateArticleReply": {
+      "type": "object",
+      "properties": {
+        "Article": {
+          "$ref": "#/definitions/v1Article"
+        }
+      }
+    },
+    "v1CreateArticleRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "文章标题."
+        },
+        "content": {
+          "type": "string",
+          "description": "文章内容."
+        }
+      }
+    },
+    "v1DeleteArticleReply": {
+      "type": "object"
+    },
+    "v1GetArticleReply": {
+      "type": "object",
+      "properties": {
+        "Article": {
+          "$ref": "#/definitions/v1Article"
+        }
+      }
+    },
+    "v1HelloReply": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "The response message containing the greetings"
+    },
+    "v1ListArticleReply": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Article"
+          }
+        }
+      }
+    },
+    "v1UpdateArticleReply": {
+      "type": "object",
+      "properties": {
+        "Article": {
+          "$ref": "#/definitions/v1Article"
+        }
+      }
+    },
+    "v1UpdateArticleRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "description": "文章id."
+        },
+        "title": {
+          "type": "string",
+          "description": "文章标题."
+        },
+        "content": {
+          "type": "string",
+          "description": "文章内容."
+        }
+      }
+    }
+  }
+}
