@@ -7,7 +7,7 @@ VALIDATE_VERSION=$(shell ls $(GOPATH)/pkg/mod/github.com/envoyproxy/|grep protoc
 VALIDATE=$(GOPATH)/pkg/mod/github.com/envoyproxy/$(VALIDATE_VERSION)
 SWAG_VERSION=$(shell ls $(GOPATH)/pkg/mod/github.com/grpc-ecosystem/ |grep grpc-gateway|head -n 1)
 SWAG=$(GOPATH)/pkg/mod/github.com/grpc-ecosystem/$(SWAG_VERSION)/third_party/googleapis/google/api
-SWG_PROTO_FILES=$(shell find . -name *.proto|grep v1);
+SWG_PROTO_FILES=$(shell find . -name *.proto|grep api);
 
 
 .PHONY: init
@@ -23,7 +23,7 @@ init:
 	go get -u entgo.io/ent
 
 .PHONY: proto
-# generate code
+# generate rpc code
 proto:
 	protoc --proto_path=. \
            --proto_path=$(KRATOS)/api \
@@ -33,6 +33,19 @@ proto:
            --validate_out="lang=go",paths=source_relative:. \
            --go_out=paths=source_relative:. \
            --go-grpc_out=paths=source_relative:. \
+           --go-errors_out=paths=source_relative:. \
+           $(PROTO_FILES)
+
+.PHONY: http
+# generate http code
+http:
+	protoc --proto_path=. \
+           --proto_path=$(KRATOS)/api \
+           --proto_path=$(KRATOS)/third_party \
+           --proto_path=$(GOPATH)/src \
+           --proto_path=$(VALIDATE) \
+           --validate_out="lang=go",paths=source_relative:. \
+           --go_out=paths=source_relative:. \
            --go-http_out=paths=source_relative:. \
            --go-errors_out=paths=source_relative:. \
            $(PROTO_FILES)
