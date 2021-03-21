@@ -1,19 +1,21 @@
 package server
 
 import (
-	v1 "kratos-learning/api/helloworld/v1"
-	"kratos-learning/internal/conf"
-	"kratos-learning/internal/service"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/http"
+
+	bv1 "kratos-learning/api/blog/v1"
+	hv1 "kratos-learning/api/helloworld/v1"
+	"kratos-learning/internal/conf"
+	"kratos-learning/internal/service"
 )
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService) *http.Server {
-	var opts = []http.ServerOption{}
+func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, blog *service.BlogService) *http.Server {
+	var opts []http.ServerOption
 	if c.Http.Network != "" {
 		opts = append(opts, http.Network(c.Http.Network))
 	}
@@ -31,6 +33,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService) *http.Server
 			logging.Server(),
 		),
 	)
-	srv.HandlePrefix("/", v1.NewGreeterHandler(greeter, m))
+	srv.HandlePrefix("/hello", hv1.NewGreeterHandler(greeter, m))
+	srv.HandlePrefix("/blog", bv1.NewBlogHandler(blog, m))
 	return srv
 }

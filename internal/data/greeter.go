@@ -1,8 +1,9 @@
 package data
 
 import (
-	"kratos-learning/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
+
+	"kratos-learning/internal/biz"
 )
 
 type greeterRepo struct {

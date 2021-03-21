@@ -51,6 +51,8 @@ func (m *Article) Validate() error {
 
 	// no validation rules for Content
 
+	// no validation rules for Like
+
 	return nil
 }
 
@@ -116,7 +118,12 @@ func (m *CreateArticleRequest) Validate() error {
 		return nil
 	}
 
-	// no validation rules for Title
+	if l := utf8.RuneCountInString(m.GetTitle()); l < 2 || l > 10 {
+		return CreateArticleRequestValidationError{
+			field:  "Title",
+			reason: "value length must be between 2 and 10 runes, inclusive",
+		}
+	}
 
 	// no validation rules for Content
 
@@ -266,7 +273,12 @@ func (m *UpdateArticleRequest) Validate() error {
 
 	// no validation rules for Id
 
-	// no validation rules for Title
+	if l := utf8.RuneCountInString(m.GetTitle()); l < 2 || l > 10 {
+		return UpdateArticleRequestValidationError{
+			field:  "Title",
+			reason: "value length must be between 2 and 10 runes, inclusive",
+		}
+	}
 
 	// no validation rules for Content
 

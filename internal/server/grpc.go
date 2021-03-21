@@ -1,19 +1,21 @@
 package server
 
 import (
-	v1 "kratos-learning/api/helloworld/v1"
-	"kratos-learning/internal/conf"
-	"kratos-learning/internal/service"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/status"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
+
+	bv1 "kratos-learning/api/blog/v1"
+	hv1 "kratos-learning/api/helloworld/v1"
+	"kratos-learning/internal/conf"
+	"kratos-learning/internal/service"
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, greeter *service.GreeterService) *grpc.Server {
+func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, blog *service.BlogService) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			middleware.Chain(
@@ -34,6 +36,7 @@ func NewGRPCServer(c *conf.Server, greeter *service.GreeterService) *grpc.Server
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterGreeterServer(srv, greeter)
+	hv1.RegisterGreeterServer(srv, greeter)
+	bv1.RegisterBlogServer(srv, blog)
 	return srv
 }

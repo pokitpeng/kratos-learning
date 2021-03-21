@@ -5,6 +5,9 @@ KRATOS_VERSION=$(shell go mod graph |grep go-kratos/kratos/v2 |head -n 1 |awk -F
 KRATOS=$(GOPATH)/pkg/mod/github.com/go-kratos/kratos/v2@$(KRATOS_VERSION)
 VALIDATE_VERSION=$(shell ls $(GOPATH)/pkg/mod/github.com/envoyproxy/|grep protoc-gen-validate|head -n 1)
 VALIDATE=$(GOPATH)/pkg/mod/github.com/envoyproxy/$(VALIDATE_VERSION)
+SWAG_VERSION=$(shell ls $(GOPATH)/pkg/mod/github.com/grpc-ecosystem/ |grep grpc-gateway|head -n 1)
+SWAG=$(GOPATH)/pkg/mod/github.com/grpc-ecosystem/$(SWAG_VERSION)/third_party/googleapis/google/api
+SWG_PROTO_FILES=$(shell find . -name *.proto|grep v1);
 
 
 .PHONY: init
@@ -16,6 +19,8 @@ init:
 	go get -u google.golang.org/protobuf/cmd/protoc-gen-go
 	go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
 	go get -u github.com/envoyproxy/protoc-gen-validate
+	go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
+	go get -u entgo.io/ent
 
 .PHONY: proto
 # generate code
@@ -29,12 +34,38 @@ proto:
            --go_out=paths=source_relative:. \
            --go-grpc_out=paths=source_relative:. \
            --go-http_out=paths=source_relative:. \
-           --go-errors_out=paths=source_relative:. $(PROTO_FILES)
+           --go-errors_out=paths=source_relative:. \
+           $(PROTO_FILES)
+
+.PHONY: swag
+# generate swagger
+swag:
+	rm -rf docs;
+	protoc --proto_path=. \
+		   --proto_path=$(KRATOS)/api \
+		   --proto_path=$(KRATOS)/third_party \
+		   --proto_path=$(GOPATH)/src \
+		   --proto_path=$(VALIDATE) \
+		   --proto_path=$(SWAG) \
+		   --validate_out="lang=go",paths=source_relative:. \
+		   --go_out=paths=source_relative:. \
+		   --swagger_out=allow_delete_body=true,logtostderr=true,allow_merge=true:. \
+		   --go-grpc_out=paths=source_relative:. \
+		   --go-http_out=paths=source_relative:. \
+		   --go-errors_out=paths=source_relative:. \
+		   $(SWG_PROTO_FILES)
+	mkdir docs;
+	mv *.swagger.json docs
+
+.PHONY: clean
+# clean generate code
+clean:
+	find . -name *.*.go -o -name *.swagger.json |xargs rm -rf
 
 .PHONY: run
 # run program
 run:
-	cd cmd/blog/ && go run .
+	cd cmd/kratos-learning/ && go run .
 
 .PHONY: ent
 # generate ent
@@ -42,7 +73,7 @@ ent:
 	cd internal/data/ && ent generate ./ent/schema
 
 .PHONY: generate
-# generate code
+# generate client code
 generate:
 	go generate ./...
 

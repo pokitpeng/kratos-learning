@@ -14,232 +14,242 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// BlogServiceClient is the client API for BlogService service.
+// BlogClient is the client API for Blog service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type BlogServiceClient interface {
+type BlogClient interface {
+	//创建文章.
 	CreateArticle(ctx context.Context, in *CreateArticleRequest, opts ...grpc.CallOption) (*CreateArticleReply, error)
+	//更新文章.
 	UpdateArticle(ctx context.Context, in *UpdateArticleRequest, opts ...grpc.CallOption) (*UpdateArticleReply, error)
+	//删除文章.
 	DeleteArticle(ctx context.Context, in *DeleteArticleRequest, opts ...grpc.CallOption) (*DeleteArticleReply, error)
+	//获取文章.
 	GetArticle(ctx context.Context, in *GetArticleRequest, opts ...grpc.CallOption) (*GetArticleReply, error)
+	//列举文章.
 	ListArticle(ctx context.Context, in *ListArticleRequest, opts ...grpc.CallOption) (*ListArticleReply, error)
 }
 
-type blogServiceClient struct {
+type blogClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewBlogServiceClient(cc grpc.ClientConnInterface) BlogServiceClient {
-	return &blogServiceClient{cc}
+func NewBlogClient(cc grpc.ClientConnInterface) BlogClient {
+	return &blogClient{cc}
 }
 
-func (c *blogServiceClient) CreateArticle(ctx context.Context, in *CreateArticleRequest, opts ...grpc.CallOption) (*CreateArticleReply, error) {
+func (c *blogClient) CreateArticle(ctx context.Context, in *CreateArticleRequest, opts ...grpc.CallOption) (*CreateArticleReply, error) {
 	out := new(CreateArticleReply)
-	err := c.cc.Invoke(ctx, "/api.blog.v1.BlogService/CreateArticle", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.blog.v1.Blog/CreateArticle", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *blogServiceClient) UpdateArticle(ctx context.Context, in *UpdateArticleRequest, opts ...grpc.CallOption) (*UpdateArticleReply, error) {
+func (c *blogClient) UpdateArticle(ctx context.Context, in *UpdateArticleRequest, opts ...grpc.CallOption) (*UpdateArticleReply, error) {
 	out := new(UpdateArticleReply)
-	err := c.cc.Invoke(ctx, "/api.blog.v1.BlogService/UpdateArticle", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.blog.v1.Blog/UpdateArticle", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *blogServiceClient) DeleteArticle(ctx context.Context, in *DeleteArticleRequest, opts ...grpc.CallOption) (*DeleteArticleReply, error) {
+func (c *blogClient) DeleteArticle(ctx context.Context, in *DeleteArticleRequest, opts ...grpc.CallOption) (*DeleteArticleReply, error) {
 	out := new(DeleteArticleReply)
-	err := c.cc.Invoke(ctx, "/api.blog.v1.BlogService/DeleteArticle", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.blog.v1.Blog/DeleteArticle", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *blogServiceClient) GetArticle(ctx context.Context, in *GetArticleRequest, opts ...grpc.CallOption) (*GetArticleReply, error) {
+func (c *blogClient) GetArticle(ctx context.Context, in *GetArticleRequest, opts ...grpc.CallOption) (*GetArticleReply, error) {
 	out := new(GetArticleReply)
-	err := c.cc.Invoke(ctx, "/api.blog.v1.BlogService/GetArticle", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.blog.v1.Blog/GetArticle", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *blogServiceClient) ListArticle(ctx context.Context, in *ListArticleRequest, opts ...grpc.CallOption) (*ListArticleReply, error) {
+func (c *blogClient) ListArticle(ctx context.Context, in *ListArticleRequest, opts ...grpc.CallOption) (*ListArticleReply, error) {
 	out := new(ListArticleReply)
-	err := c.cc.Invoke(ctx, "/api.blog.v1.BlogService/ListArticle", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.blog.v1.Blog/ListArticle", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// BlogServiceServer is the server API for BlogService service.
-// All implementations must embed UnimplementedBlogServiceServer
+// BlogServer is the server API for Blog service.
+// All implementations must embed UnimplementedBlogServer
 // for forward compatibility
-type BlogServiceServer interface {
+type BlogServer interface {
+	//创建文章.
 	CreateArticle(context.Context, *CreateArticleRequest) (*CreateArticleReply, error)
+	//更新文章.
 	UpdateArticle(context.Context, *UpdateArticleRequest) (*UpdateArticleReply, error)
+	//删除文章.
 	DeleteArticle(context.Context, *DeleteArticleRequest) (*DeleteArticleReply, error)
+	//获取文章.
 	GetArticle(context.Context, *GetArticleRequest) (*GetArticleReply, error)
+	//列举文章.
 	ListArticle(context.Context, *ListArticleRequest) (*ListArticleReply, error)
-	mustEmbedUnimplementedBlogServiceServer()
+	mustEmbedUnimplementedBlogServer()
 }
 
-// UnimplementedBlogServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedBlogServiceServer struct {
+// UnimplementedBlogServer must be embedded to have forward compatible implementations.
+type UnimplementedBlogServer struct {
 }
 
-func (UnimplementedBlogServiceServer) CreateArticle(context.Context, *CreateArticleRequest) (*CreateArticleReply, error) {
+func (UnimplementedBlogServer) CreateArticle(context.Context, *CreateArticleRequest) (*CreateArticleReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateArticle not implemented")
 }
-func (UnimplementedBlogServiceServer) UpdateArticle(context.Context, *UpdateArticleRequest) (*UpdateArticleReply, error) {
+func (UnimplementedBlogServer) UpdateArticle(context.Context, *UpdateArticleRequest) (*UpdateArticleReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateArticle not implemented")
 }
-func (UnimplementedBlogServiceServer) DeleteArticle(context.Context, *DeleteArticleRequest) (*DeleteArticleReply, error) {
+func (UnimplementedBlogServer) DeleteArticle(context.Context, *DeleteArticleRequest) (*DeleteArticleReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteArticle not implemented")
 }
-func (UnimplementedBlogServiceServer) GetArticle(context.Context, *GetArticleRequest) (*GetArticleReply, error) {
+func (UnimplementedBlogServer) GetArticle(context.Context, *GetArticleRequest) (*GetArticleReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetArticle not implemented")
 }
-func (UnimplementedBlogServiceServer) ListArticle(context.Context, *ListArticleRequest) (*ListArticleReply, error) {
+func (UnimplementedBlogServer) ListArticle(context.Context, *ListArticleRequest) (*ListArticleReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListArticle not implemented")
 }
-func (UnimplementedBlogServiceServer) mustEmbedUnimplementedBlogServiceServer() {}
+func (UnimplementedBlogServer) mustEmbedUnimplementedBlogServer() {}
 
-// UnsafeBlogServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to BlogServiceServer will
+// UnsafeBlogServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to BlogServer will
 // result in compilation errors.
-type UnsafeBlogServiceServer interface {
-	mustEmbedUnimplementedBlogServiceServer()
+type UnsafeBlogServer interface {
+	mustEmbedUnimplementedBlogServer()
 }
 
-func RegisterBlogServiceServer(s grpc.ServiceRegistrar, srv BlogServiceServer) {
-	s.RegisterService(&BlogService_ServiceDesc, srv)
+func RegisterBlogServer(s grpc.ServiceRegistrar, srv BlogServer) {
+	s.RegisterService(&Blog_ServiceDesc, srv)
 }
 
-func _BlogService_CreateArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Blog_CreateArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateArticleRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlogServiceServer).CreateArticle(ctx, in)
+		return srv.(BlogServer).CreateArticle(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.blog.v1.BlogService/CreateArticle",
+		FullMethod: "/api.blog.v1.Blog/CreateArticle",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlogServiceServer).CreateArticle(ctx, req.(*CreateArticleRequest))
+		return srv.(BlogServer).CreateArticle(ctx, req.(*CreateArticleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _BlogService_UpdateArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Blog_UpdateArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateArticleRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlogServiceServer).UpdateArticle(ctx, in)
+		return srv.(BlogServer).UpdateArticle(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.blog.v1.BlogService/UpdateArticle",
+		FullMethod: "/api.blog.v1.Blog/UpdateArticle",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlogServiceServer).UpdateArticle(ctx, req.(*UpdateArticleRequest))
+		return srv.(BlogServer).UpdateArticle(ctx, req.(*UpdateArticleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _BlogService_DeleteArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Blog_DeleteArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteArticleRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlogServiceServer).DeleteArticle(ctx, in)
+		return srv.(BlogServer).DeleteArticle(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.blog.v1.BlogService/DeleteArticle",
+		FullMethod: "/api.blog.v1.Blog/DeleteArticle",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlogServiceServer).DeleteArticle(ctx, req.(*DeleteArticleRequest))
+		return srv.(BlogServer).DeleteArticle(ctx, req.(*DeleteArticleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _BlogService_GetArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Blog_GetArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetArticleRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlogServiceServer).GetArticle(ctx, in)
+		return srv.(BlogServer).GetArticle(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.blog.v1.BlogService/GetArticle",
+		FullMethod: "/api.blog.v1.Blog/GetArticle",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlogServiceServer).GetArticle(ctx, req.(*GetArticleRequest))
+		return srv.(BlogServer).GetArticle(ctx, req.(*GetArticleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _BlogService_ListArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Blog_ListArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListArticleRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlogServiceServer).ListArticle(ctx, in)
+		return srv.(BlogServer).ListArticle(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.blog.v1.BlogService/ListArticle",
+		FullMethod: "/api.blog.v1.Blog/ListArticle",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlogServiceServer).ListArticle(ctx, req.(*ListArticleRequest))
+		return srv.(BlogServer).ListArticle(ctx, req.(*ListArticleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// BlogService_ServiceDesc is the grpc.ServiceDesc for BlogService service.
+// Blog_ServiceDesc is the grpc.ServiceDesc for Blog service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var BlogService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.blog.v1.BlogService",
-	HandlerType: (*BlogServiceServer)(nil),
+var Blog_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "api.blog.v1.Blog",
+	HandlerType: (*BlogServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateArticle",
-			Handler:    _BlogService_CreateArticle_Handler,
+			Handler:    _Blog_CreateArticle_Handler,
 		},
 		{
 			MethodName: "UpdateArticle",
-			Handler:    _BlogService_UpdateArticle_Handler,
+			Handler:    _Blog_UpdateArticle_Handler,
 		},
 		{
 			MethodName: "DeleteArticle",
-			Handler:    _BlogService_DeleteArticle_Handler,
+			Handler:    _Blog_DeleteArticle_Handler,
 		},
 		{
 			MethodName: "GetArticle",
-			Handler:    _BlogService_GetArticle_Handler,
+			Handler:    _Blog_GetArticle_Handler,
 		},
 		{
 			MethodName: "ListArticle",
-			Handler:    _BlogService_ListArticle_Handler,
+			Handler:    _Blog_ListArticle_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/blog/v1/blog.proto",
+	Metadata: "blog.proto",
 }

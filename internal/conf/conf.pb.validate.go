@@ -523,6 +523,20 @@ func (m *Data_Redis) Validate() error {
 
 	// no validation rules for Addr
 
+	// no validation rules for Password
+
+	// no validation rules for Db
+
+	if v, ok := interface{}(m.GetDialTimeout()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return Data_RedisValidationError{
+				field:  "DialTimeout",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if v, ok := interface{}(m.GetReadTimeout()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return Data_RedisValidationError{

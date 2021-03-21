@@ -19,7 +19,7 @@ var _ = mux.NewRouter
 
 const _ = http1.SupportPackageIsVersion1
 
-type BlogServiceHandler interface {
+type BlogHandler interface {
 	CreateArticle(context.Context, *CreateArticleRequest) (*CreateArticleReply, error)
 
 	DeleteArticle(context.Context, *DeleteArticleRequest) (*DeleteArticleReply, error)
@@ -31,14 +31,14 @@ type BlogServiceHandler interface {
 	UpdateArticle(context.Context, *UpdateArticleRequest) (*UpdateArticleReply, error)
 }
 
-func NewBlogServiceHandler(srv BlogServiceHandler, opts ...http1.HandleOption) http.Handler {
+func NewBlogHandler(srv BlogHandler, opts ...http1.HandleOption) http.Handler {
 	h := http1.DefaultHandleOptions()
 	for _, o := range opts {
 		o(&h)
 	}
 	r := mux.NewRouter()
 
-	r.HandleFunc("/v1/article/", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/v1/article", func(w http.ResponseWriter, r *http.Request) {
 		var in CreateArticleRequest
 		if err := h.Decode(r, &in); err != nil {
 			h.Error(w, r, err)
@@ -149,7 +149,7 @@ func NewBlogServiceHandler(srv BlogServiceHandler, opts ...http1.HandleOption) h
 		}
 	}).Methods("GET")
 
-	r.HandleFunc("/v1/article/", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/v1/article", func(w http.ResponseWriter, r *http.Request) {
 		var in ListArticleRequest
 		if err := h.Decode(r, &in); err != nil {
 			h.Error(w, r, err)
