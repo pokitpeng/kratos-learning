@@ -1,30 +1,12 @@
-# Kratos Project Template
+# kratos learning
 
-## Install Kratos
-```
-go get -u github.com/go-kratos/kratos/cmd/kratos/v2@latest
-```
-## Create a service
-```
-# create a template project
-kratos new helloworld
+kratos learning project
 
-cd helloworld
-# Add a proto template
-kratos proto add api/helloworld/helloworld.proto
-# Generate the source code of service by proto file
-kratos proto server api/helloworld/helloworld.proto -t internal/service
+## todo
 
-go generate ./...
-go build -o ./bin/ ./...
-./bin/helloworld -conf ./configs
-```
-## Automated Initialization (wire)
-```
-# install wire
-go get github.com/google/wire/cmd/wire
 
-# generate wire
-cd cmd/server
-wire
-```
+- [x] 生成rpc代码
+- [x] 生成http代码
+- [x] 数据校验
+- [x] 生成swagger文件
+- [ ] 集成swagger
